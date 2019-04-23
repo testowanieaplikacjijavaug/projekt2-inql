@@ -46,6 +46,14 @@ public class ClientTest {
         assertThat(client.getEmail()).isEqualTo(email);
     }
 
+    @Test
+    void getOrdersTest() {
+        List<Order> orders = new ArrayList();
+        client.setOrders(orders);
+
+        assertThat(client.getOrders()).isInstanceOf(List.class).isEqualTo(orders);
+    }
+
     @AfterEach
     void tearDown() {
         client = null;

@@ -30,4 +30,7 @@ public class Client {
     @NotNull
     @Size(min = 2, max =30)
     private String email;
+
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders;
 }
