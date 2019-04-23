@@ -15,11 +15,21 @@ public class ItemTest {
     }
 
     @Test
+    void itemNotNullTest() {
+        assertThat(item).isNotNull();
+    }
+
+    @Test
+    void itemInstanceTest() {
+        assertThat(item).isInstanceOf(Item.class);
+    }
+
+    @Test
     void getIdTest() {
         Long id = 4L;
         item.setId(id);
 
-        assertThat(item.getId()).isEqualTo(id);
+        assertThat(item.getId()).isInstanceOf(Long.class).isEqualTo(id);
     }
 
     @Test
@@ -27,7 +37,7 @@ public class ItemTest {
         String name = "Banana";
         item.setName(name);
 
-        assertThat(item.getName()).isEqualTo(name);
+        assertThat(item.getName()).isInstanceOf(String.class).isEqualTo(name);
     }
 
     @Test
@@ -35,7 +45,7 @@ public class ItemTest {
         Double value = 22.05;
         item.setValue(value);
 
-        assertThat(item.getValue()).isEqualTo(value);
+        assertThat(item.getValue()).isInstanceOf(Double.class).isEqualTo(value);
     }
 
     @AfterEach

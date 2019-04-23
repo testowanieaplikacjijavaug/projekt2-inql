@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -18,12 +16,15 @@ public class Item {
     private Long id;
 
     @Column(unique = true)
-    @NotNull
-    @Size(min = 2, max = 30)
+    @NotNull(message = "Name cannot be null.")
+    @NotBlank(message = "Name cannot be blank.")
+    @Size(min = 2, max = 30, message = "Invalid name input.")
+    @Pattern(regexp = "[A-Z][a-z]+",message = "Invalid name input.")
     private String name;
 
     @NotNull
-    @Digits(integer = 10, fraction = 2)
+    @Positive(message = "Value must be higher than zero.")
+    @Digits(integer = 10, fraction = 2, message = "Invalid value input.")
     private Double value;
 
 }
