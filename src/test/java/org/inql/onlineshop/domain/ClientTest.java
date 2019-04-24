@@ -1,4 +1,4 @@
-package domain;
+package org.inql.onlineshop.domain;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -44,7 +44,7 @@ public class ClientTest {
 
     @Test
     void getEmailTest() {
-        String email = "mike_fox@domain.com";
+        String email = "mike_fox@org.inql.onlineshop.domain.com";
         client.setEmail(email);
 
         assertThat(client.getEmail()).isEqualTo(email);

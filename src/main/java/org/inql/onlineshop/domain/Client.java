@@ -1,4 +1,4 @@
-package domain;
+package org.inql.onlineshop.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,6 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
+@Table(name = "db_client")
 public class Client {
 
     @Id

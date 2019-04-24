@@ -1,4 +1,4 @@
-package domain;
+package org.inql.onlineshop.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +9,7 @@ import javax.validation.constraints.*;
 @Getter
 @Setter
 @Entity
+@Table(name = "db_item")
 public class Item {
 
     @Id
