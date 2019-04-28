@@ -37,12 +37,12 @@ public class ClientServiceImplMockitoTest {
         client.setId(1L);
         Optional<Client> clientOptional = Optional.of(client);
 
-        when(clientRepository.findById(anyLong())).thenReturn(clientOptional);
+        when(clientRepository.findById(1L)).thenReturn(clientOptional);
 
         Client clientReturned = clientService.findById(1L);
 
         assertThat(clientReturned).isNotNull().isInstanceOf(Client.class).isEqualTo(client);
-        verify(clientRepository, times(1)).findById(anyLong());
+        verify(clientRepository, times(1)).findById(1L);
         verify(clientRepository, never()).findAll();
     }
 
@@ -50,7 +50,7 @@ public class ClientServiceImplMockitoTest {
     void findClientByIdNotFoundTest() {
         Optional<Client> clientOptional = Optional.empty();
 
-        when(clientRepository.findById(anyLong())).thenReturn(clientOptional);
+        when(clientRepository.findById(1L)).thenReturn(clientOptional);
 
         assertThatThrownBy(() -> clientService.findById(1L)).isInstanceOf(NotFoundException.class).hasMessage("Client not found");
     }
@@ -61,12 +61,12 @@ public class ClientServiceImplMockitoTest {
         client.setEmail("example@example.com");
         Optional<Client> clientOptional = Optional.of(client);
 
-        when(clientRepository.findClientByEmail(anyString())).thenReturn(clientOptional);
+        when(clientRepository.findClientByEmail("example@example.com")).thenReturn(clientOptional);
 
         Client clientReturned = clientService.findByEmail("example@example.com");
 
         assertThat(clientReturned).isNotNull().isInstanceOf(Client.class).isEqualTo(client);
-        verify(clientRepository, times(1)).findClientByEmail(anyString());
+        verify(clientRepository, times(1)).findClientByEmail("example@example.com");
         verify(clientRepository, never()).findAll();
     }
 
@@ -74,7 +74,7 @@ public class ClientServiceImplMockitoTest {
     void findClientByEmailNotFoundTest() {
         Optional<Client> clientOptional = Optional.empty();
 
-        when(clientRepository.findClientByEmail(anyString())).thenReturn(clientOptional);
+        when(clientRepository.findClientByEmail("example@example.com")).thenReturn(clientOptional);
 
         assertThatThrownBy(() -> clientService.findByEmail("example@example.com")).isInstanceOf(NotFoundException.class).hasMessage("Client not found");
     }
@@ -93,7 +93,7 @@ public class ClientServiceImplMockitoTest {
         assertThat(clients).isNotNull().hasSize(1).containsOnly(client).isInstanceOf(Set.class);
         verify(clientRepository, times(1)).findClientsByName("Marcin");
         verify(clientRepository, never()).findAll();
-        verify(clientRepository, never()).findById(anyLong());
+        verify(clientRepository, never()).findById(1L);
     }
 
     @Test
@@ -110,7 +110,7 @@ public class ClientServiceImplMockitoTest {
         assertThat(clients).isEmpty();
         verify(clientRepository, times(1)).findClientsByName("Tomasz");
         verify(clientRepository, never()).findAll();
-        verify(clientRepository, never()).findById(anyLong());
+        verify(clientRepository, never()).findById(1L);
     }
 
     @Test
@@ -127,7 +127,7 @@ public class ClientServiceImplMockitoTest {
         assertThat(clients).isNotNull().hasSize(1).containsOnly(client).isInstanceOf(Set.class);
         verify(clientRepository, times(1)).findClientsBySurname("Abacki");
         verify(clientRepository, never()).findAll();
-        verify(clientRepository, never()).findById(anyLong());
+        verify(clientRepository, never()).findById(1L);
     }
 
     @Test
@@ -144,7 +144,7 @@ public class ClientServiceImplMockitoTest {
         assertThat(clients).isEmpty();
         verify(clientRepository, times(1)).findClientsBySurname("Babacki");
         verify(clientRepository, never()).findAll();
-        verify(clientRepository, never()).findById(anyLong());
+        verify(clientRepository, never()).findById(1L);
     }
 
     @Test
@@ -159,7 +159,7 @@ public class ClientServiceImplMockitoTest {
 
         assertThat(clients).isNotNull().hasSize(1).containsOnly(client).isInstanceOf(Set.class);
         verify(clientRepository, times(1)).findAll();
-        verify(clientRepository, never()).findById(anyLong());
+        verify(clientRepository, never()).findById(1L);
     }
 
     @Test
@@ -168,7 +168,7 @@ public class ClientServiceImplMockitoTest {
 
         clientService.deleteById(idToDelete);
 
-        verify(clientRepository, times(1)).deleteById(anyLong());
+        verify(clientRepository, times(1)).deleteById(2L);
     }
 
     @AfterEach
