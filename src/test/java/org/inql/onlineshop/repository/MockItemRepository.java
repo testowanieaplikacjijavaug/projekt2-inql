@@ -109,36 +109,80 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Set<Item> findItemsByNameContaining(String keyword) {
-        return null;
+        if(keyword == null || keyword.isEmpty()) throw new IllegalArgumentException("Null or empty string is not allowed");
+        Set<Item> result = new HashSet<>();
+        database
+                .stream()
+                .filter(item -> item.getName().contains(keyword))
+                .forEach(result::add);
+        return result;
     }
 
     @Override
     public Set<Item> findItemsByValue(Double value) {
-        return null;
+        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        Set<Item> result = new HashSet<>();
+        database
+                .stream()
+                .filter(item -> item.getValue().equals(value))
+                .forEach(result::add);
+        return result;
     }
 
     @Override
     public Set<Item> findItemsByValueBetween(Double lower, Double upper) {
-        return null;
+        if(lower == null || lower.isInfinite() || lower.isNaN() || lower<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        if(upper == null || upper.isInfinite() || upper.isNaN() || upper<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        if(lower >= upper) throw new IllegalArgumentException("Lower value is higher than upper");
+        Set<Item> result = new HashSet<>();
+        database
+                .stream()
+                .filter(item -> item.getValue()>=lower && item.getValue()<=upper)
+                .forEach(result::add);
+        return result;
     }
 
     @Override
     public Set<Item> findItemsByValueLessThanEqual(Double value) {
-        return null;
+        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        Set<Item> result = new HashSet<>();
+        database
+                .stream()
+                .filter(item -> item.getValue()<=(value))
+                .forEach(result::add);
+        return result;
     }
 
     @Override
     public Set<Item> findItemsByValueLessThan(Double value) {
-        return null;
+        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        Set<Item> result = new HashSet<>();
+        database
+                .stream()
+                .filter(item -> item.getValue()<(value))
+                .forEach(result::add);
+        return result;
     }
 
     @Override
     public Set<Item> findItemsByValueGreaterThanEqual(Double value) {
-        return null;
+        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        Set<Item> result = new HashSet<>();
+        database
+                .stream()
+                .filter(item -> item.getValue()>=(value))
+                .forEach(result::add);
+        return result;
     }
 
     @Override
     public Set<Item> findItemsByValueGreaterThan(Double value) {
-        return null;
+        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        Set<Item> result = new HashSet<>();
+        database
+                .stream()
+                .filter(item -> item.getValue()>(value))
+                .forEach(result::add);
+        return result;
     }
 }
