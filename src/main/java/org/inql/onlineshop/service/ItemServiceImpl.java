@@ -4,6 +4,8 @@ import javassist.NotFoundException;
 import org.inql.onlineshop.domain.Item;
 import org.inql.onlineshop.repository.ItemRepository;
 
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class ItemServiceImpl implements ItemService {
@@ -16,66 +18,85 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Set<Item> getItems() {
-        return null;
+        Set<Item> itemSet = new HashSet<>();
+        itemRepository.findAll().iterator().forEachRemaining(itemSet::add);
+        return itemSet;
     }
 
     @Override
     public Item findById(Long l) throws NotFoundException {
-        return null;
+        Optional<Item> itemOptional = itemRepository.findById(l);
+        return itemOptional.orElseThrow(() -> new NotFoundException("Item not found"));
     }
 
     @Override
     public Item findByName(String name) throws NotFoundException {
-        return null;
-    }
+        Optional<Item> itemOptional = itemRepository.findItemByName(name);
+        return itemOptional.orElseThrow(() -> new NotFoundException("Item not found"));    }
 
     @Override
     public Set<Item> findByNameContaining(String keyword) {
-        return null;
+        Set<Item> itemSet = new HashSet<>();
+        itemRepository.findItemsByNameContaining(keyword).iterator().forEachRemaining(itemSet::add);
+        return itemSet;
     }
 
     @Override
     public Set<Item> findByValue(Double value) {
-        return null;
+        Set<Item> itemSet = new HashSet<>();
+        itemRepository.findItemsByValue(value).iterator().forEachRemaining(itemSet::add);
+        return itemSet;
     }
 
     @Override
     public Set<Item> findByValueBetween(Double lower, Double upper) {
-        return null;
+        Set<Item> itemSet = new HashSet<>();
+        itemRepository.findItemsByValueBetween(lower,upper).iterator().forEachRemaining(itemSet::add);
+        return itemSet;
     }
 
     @Override
     public Set<Item> findByValueLessThanEqual(Double value) {
-        return null;
+        Set<Item> itemSet = new HashSet<>();
+        itemRepository.findItemsByValueLessThanEqual(value).iterator().forEachRemaining(itemSet::add);
+        return itemSet;
     }
 
     @Override
     public Set<Item> findByValueLessThan(Double value) {
-        return null;
+        Set<Item> itemSet = new HashSet<>();
+        itemRepository.findItemsByValueLessThan(value).iterator().forEachRemaining(itemSet::add);
+        return itemSet;
     }
 
     @Override
     public Set<Item> findByValueGreaterThanEqual(Double value) {
-        return null;
+        Set<Item> itemSet = new HashSet<>();
+        itemRepository.findItemsByValueGreaterThanEqual(value).iterator().forEachRemaining(itemSet::add);
+        return itemSet;
     }
 
     @Override
     public Set<Item> findByValueGreaterThan(Double value) {
-        return null;
+        Set<Item> itemSet = new HashSet<>();
+        itemRepository.findItemsByValueGreaterThan(value).iterator().forEachRemaining(itemSet::add);
+        return itemSet;
     }
 
     @Override
-    public void save(Item item) {
-
+    public Item save(Item item) {
+        itemRepository.save(item);
+        return item;
     }
 
     @Override
-    public void saveAll(Iterable<Item> items) {
-
+    public Iterable<Item> saveAll(Iterable<Item> items) {
+        itemRepository.saveAll(items);
+        return items;
     }
 
     @Override
     public void deleteById(Long l) {
-
+        itemRepository.deleteById(l);
     }
 }

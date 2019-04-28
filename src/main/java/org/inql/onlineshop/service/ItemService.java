@@ -16,7 +16,7 @@ public interface ItemService {
     Set<Item> findByValueLessThan(Double value);
     Set<Item> findByValueGreaterThanEqual(Double value);
     Set<Item> findByValueGreaterThan(Double value);
-    void save(Item item);
-    void saveAll(Iterable<Item> items);
+    Item save(Item item);
+    Iterable<Item> saveAll(Iterable<Item> items);
     void deleteById(Long l);
 }
