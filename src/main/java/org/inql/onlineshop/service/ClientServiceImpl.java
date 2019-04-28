@@ -26,19 +26,14 @@ public class ClientServiceImpl implements ClientService{
     @Override
     public Client findById(Long l) throws NotFoundException {
         Optional<Client> clientOptional = clientRepository.findById(l);
-        if(!clientOptional.isPresent()){
-            throw new NotFoundException("Client not found");
-        }
-        return clientOptional.get();
+        return clientOptional.orElseThrow(() -> new NotFoundException("Client not found"));
     }
 
     @Override
     public Client findByEmail(String email) throws NotFoundException {
         Optional<Client> clientOptional = clientRepository.findClientByEmail(email);
-        if(!clientOptional.isPresent()){
-            throw new NotFoundException("Client not found");
-        }
-        return clientOptional.get();
+        return clientOptional.orElseThrow(() -> new NotFoundException("Client not found"));
+
     }
 
     @Override
