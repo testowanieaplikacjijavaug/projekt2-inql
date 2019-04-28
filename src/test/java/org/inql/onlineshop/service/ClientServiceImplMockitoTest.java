@@ -97,6 +97,23 @@ public class ClientServiceImplMockitoTest {
     }
 
     @Test
+    void findClientsByNameEmptyTest() {
+        Client client = new Client();
+        client.setName("Marcin");
+        HashSet clientsData = new HashSet();
+        clientsData.add(client);
+
+        when(clientService.findClientsByName("Tomasz")).thenReturn(new HashSet<>());
+
+        Set<Client> clients = clientService.findClientsByName("Tomasz");
+
+        assertThat(clients).isEmpty();
+        verify(clientRepository, times(1)).findClientsByName("Tomasz");
+        verify(clientRepository, never()).findAll();
+        verify(clientRepository, never()).findById(anyLong());
+    }
+
+    @Test
     void findClientsBySurnameTest() {
         Client client = new Client();
         client.setSurname("Abacki");
@@ -109,6 +126,23 @@ public class ClientServiceImplMockitoTest {
 
         assertThat(clients).isNotNull().hasSize(1).containsOnly(client).isInstanceOf(Set.class);
         verify(clientRepository, times(1)).findClientsBySurname("Abacki");
+        verify(clientRepository, never()).findAll();
+        verify(clientRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    void findClientsBySurnameEmptyTest() {
+        Client client = new Client();
+        client.setSurname("Abacki");
+        HashSet clientsData = new HashSet();
+        clientsData.add(client);
+
+        when(clientService.findClientsBySurname("Babacki")).thenReturn(new HashSet<>());
+
+        Set<Client> clients = clientService.findClientsBySurname("Babacki");
+
+        assertThat(clients).isEmpty();
+        verify(clientRepository, times(1)).findClientsBySurname("Babacki");
         verify(clientRepository, never()).findAll();
         verify(clientRepository, never()).findById(anyLong());
     }
