@@ -2,10 +2,18 @@ package org.inql.onlineshop.service;
 
 import javassist.NotFoundException;
 import org.inql.onlineshop.domain.Order;
+import org.inql.onlineshop.repository.OrderRepository;
 
 import java.util.Set;
 
 public class OrderServiceImpl implements OrderService {
+
+    OrderRepository orderRepository;
+
+    public OrderServiceImpl(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+
     @Override
     public Set<Order> getOrders() {
         return null;
