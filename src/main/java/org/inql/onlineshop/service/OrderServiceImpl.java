@@ -31,6 +31,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Iterable<Order> findAll(Iterable<Long> orders_id) {
+        return null;
+    }
+
+    @Override
     public Set<Order> findOrdersByClientId(Long id) {
         Set<Order> orderSet = new HashSet<>();
         orderRepository.findOrdersByClient_Id(id).iterator().forEachRemaining(orderSet::add);
@@ -55,6 +60,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order save(Order order) {
         return orderRepository.save(order);
+    }
+
+    @Override
+    public Iterable<Order> saveAll(Iterable<Order> orders) {
+        return null;
     }
 
     @Override

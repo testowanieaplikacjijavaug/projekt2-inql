@@ -9,10 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.assertj.core.api.Assertions.*;
@@ -61,6 +58,54 @@ public class ClientServiceImplMockitoTest {
         when(clientRepository.findById(null)).thenThrow(new IllegalArgumentException("Null id not allowed"));
 
         assertThatThrownBy(() -> clientService.findById(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null id not allowed");
+    }
+
+    @Test
+    void findAllTest() {
+        Client client = new Client();
+        client.setId(1L);
+        Client secondClient = new Client();
+        secondClient.setId(2L);
+
+        HashSet<Client> clientsData = new HashSet<>(Arrays.asList(client,secondClient));
+
+        List<Long> idsToFind = Arrays.asList(1L,2L);
+
+        when(clientRepository.findAllById(idsToFind)).thenReturn(clientsData);
+
+        Iterable<Client> clientsReturned = clientService.findAll(idsToFind);
+
+        assertThat(clientsReturned).isNotNull().isNotEmpty().hasOnlyElementsOfType(Client.class).hasSize(2).containsExactlyInAnyOrder(client,secondClient);
+        verify(clientRepository,times(1)).findAllById(idsToFind);
+    }
+
+    @Test
+    void findAllPartResultTest() {
+        Client client = new Client();
+        client.setId(1L);
+        Client secondClient = new Client();
+        secondClient.setId(2L);
+
+        HashSet<Client> clientsData = new HashSet<>(Arrays.asList(client,secondClient));
+
+        List<Long> idsToFind = Collections.singletonList(1L);
+
+        when(clientRepository.findAllById(idsToFind)).thenReturn(new HashSet<>(Collections.singletonList(client)));
+
+        Iterable<Client> clientsReturned = clientService.findAll(idsToFind);
+
+        assertThat(clientsReturned).isNotNull().isNotEmpty().hasOnlyElementsOfType(Client.class).hasSize(1).isNotEqualTo(clientsData).containsExactly(client);
+        verify(clientRepository,times(1)).findAllById(idsToFind);
+    }
+
+    @Test
+    void findAllNullInputTest() {
+        List<Long> idsToFind = Arrays.asList(1L, null);
+
+        when(clientRepository.findAllById(idsToFind)).thenThrow(new IllegalArgumentException("Null id not allowed"));
+
+        assertThatThrownBy(() -> clientService.findAll(idsToFind)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Null id not allowed");
     }
 
     @Test
