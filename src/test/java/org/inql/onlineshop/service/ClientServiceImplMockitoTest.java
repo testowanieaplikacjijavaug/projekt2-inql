@@ -430,6 +430,73 @@ public class ClientServiceImplMockitoTest {
     }
 
     @Test
+    void saveClientTest() {
+        Client client = new Client();
+        client.setId(1L);
+        client.setName("Dawid");
+        client.setSurname("Abacki");
+        client.setEmail("dawid@abacki.com");
+
+        when(clientRepository.save(client)).thenReturn(client);
+
+        Client savedClient = clientService.save(client);
+
+        assertThat(savedClient).isNotNull().isInstanceOf(Client.class).isEqualTo(client);
+        verify(clientRepository, times(1)).save(client);
+    }
+
+    @Test
+    void saveClientNullTest() {
+        Client client = null;
+
+        when(clientRepository.save(client)).thenThrow(new IllegalArgumentException("Given client cannot be null"));
+
+        assertThatThrownBy(() -> clientService.save(client)).isInstanceOf(IllegalArgumentException.class).hasMessage("Given client cannot be null");
+    }
+
+    @Test
+    void saveAllTest() {
+        Client client = new Client();
+        client.setId(1L);
+        client.setName("Dawid");
+        client.setSurname("Abacki");
+        client.setEmail("dawid@abacki.com");
+
+        Client secondClient = new Client();
+        secondClient.setId(2L);
+        secondClient.setName("Anna");
+        secondClient.setSurname("Babacka");
+        secondClient.setEmail("anna@babacka.com");
+
+        HashSet<Client> clientsData = new HashSet<>(Arrays.asList(client,secondClient));
+
+        when(clientRepository.saveAll(clientsData)).thenReturn(new HashSet<>(Arrays.asList(client,secondClient)));
+
+        Iterable<Client> clientsSaved = clientService.saveAll(clientsData);
+
+        assertThat(clientsSaved).isNotNull().containsExactlyInAnyOrder(client,secondClient);
+        verify(clientRepository,times(1)).saveAll(clientsData);
+    }
+
+    @Test
+    void saveAllWithNullEntityTest() {
+        Client client = new Client();
+        client.setId(1L);
+        client.setName("Dawid");
+        client.setSurname("Abacki");
+        client.setEmail("dawid@abacki.com");
+
+        Client secondClient = null;
+
+        HashSet<Client> clientsData = new HashSet<>(Arrays.asList(client,secondClient));
+
+        when(clientRepository.saveAll(clientsData)).thenThrow(new IllegalArgumentException("One of clients is null"));
+
+        assertThatThrownBy(() -> clientService.saveAll(clientsData)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("One of clients is null");
+    }
+
+    @Test
     void deleteByIdTest() {
         Long idToDelete = 2L;
 
