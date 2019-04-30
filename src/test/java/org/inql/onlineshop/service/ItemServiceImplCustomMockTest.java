@@ -312,6 +312,21 @@ public class ItemServiceImplCustomMockTest {
         assertThat(itemsReturned).isNotNull().isNotEmpty().isInstanceOf(Set.class).hasOnlyElementsOfType(Item.class).hasSize(3).containsExactlyInAnyOrder(item, secondItem,thirdItem);
     }
 
+    @Test
+    void deleteByIdTest() {
+        Item item = new Item();
+        item.setId(2L);
+        itemService.save(item);
+
+        int currentSize = itemService.getItems().size();
+
+        Long idToDelete= 2L;
+
+        itemService.deleteById(idToDelete);
+
+        assertThat(itemService.getItems()).hasSize(currentSize-1);
+    }
+
     @AfterEach
     void tearDown() {
         itemRepository = null;

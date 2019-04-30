@@ -30,6 +30,11 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    public Iterable<Client> findAll(Iterable<Long> clients_id) {
+        return clientRepository.findAllById(clients_id);
+    }
+
+    @Override
     public Client findByEmail(String email) throws NotFoundException {
         Optional<Client> clientOptional = clientRepository.findClientByEmail(email);
         return clientOptional.orElseThrow(() -> new NotFoundException("Client not found"));
@@ -50,8 +55,34 @@ public class ClientServiceImpl implements ClientService{
         return clientSet;    }
 
     @Override
+    public Set<Client> findByNameContaining(String keyword) {
+        Set<Client> clientSet = new HashSet<>();
+        clientRepository.findClientsByNameContaining(keyword).iterator().forEachRemaining(clientSet::add);
+        return clientSet;
+    }
+
+    @Override
+    public Set<Client> findBySurnameContaining(String keyword) {
+        Set<Client> clientSet = new HashSet<>();
+        clientRepository.findClientsBySurnameContaining(keyword).iterator().forEachRemaining(clientSet::add);
+        return clientSet;
+    }
+
+    @Override
+    public Set<Client> findByEmailContaining(String keyword) {
+        Set<Client> clientSet = new HashSet<>();
+        clientRepository.findClientsByEmailContaining(keyword).iterator().forEachRemaining(clientSet::add);
+        return clientSet;
+    }
+
+    @Override
     public Client save(Client client) {
         return clientRepository.save(client);
+    }
+
+    @Override
+    public Iterable<Client> saveAll(Iterable<Client> clients) {
+        return clientRepository.saveAll(clients);
     }
 
     @Override

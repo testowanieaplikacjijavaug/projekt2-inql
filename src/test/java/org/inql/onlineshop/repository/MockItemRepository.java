@@ -4,10 +4,8 @@ import javassist.NotFoundException;
 import org.inql.onlineshop.domain.Item;
 import org.springframework.util.Assert;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.StreamSupport;
 
 public class MockItemRepository implements ItemRepository{
 
@@ -25,12 +23,17 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public <S extends Item> Iterable<S> saveAll(Iterable<S> iterable) {
+        boolean nullCheck = StreamSupport.stream(iterable.spliterator(),false)
+                .anyMatch(Objects::isNull);
+        if(nullCheck) throw new IllegalArgumentException("Null item not allowed");
         iterable.iterator().forEachRemaining(database::add);
         return iterable;
     }
 
     @Override
     public Optional<Item> findById(Long aLong) {
+        if(aLong == null)
+            throw new IllegalArgumentException("Null id not allowed");
         return database
                 .stream()
                 .filter(item -> item.getId().equals(aLong))
@@ -39,6 +42,8 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public boolean existsById(Long aLong) {
+        if(aLong == null)
+            throw new IllegalArgumentException("Null id not allowed");
         return database
                 .stream()
                 .anyMatch(item -> item.getId().equals(aLong));
@@ -51,6 +56,9 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Iterable<Item> findAllById(Iterable<Long> iterable) {
+        boolean nullCheck = StreamSupport.stream(iterable.spliterator(),false)
+                .anyMatch(Objects::isNull);
+        if(nullCheck) throw new IllegalArgumentException("Null id not allowed");
         Iterator<Long> longIterator = iterable.iterator();
         Set<Item> result = new HashSet<>();
         while(longIterator.hasNext()){
