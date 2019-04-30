@@ -56,6 +56,18 @@ public class OrderServiceImplEasyMockTest {
     }
 
     @Test
+    void findOrderByIdNullInputTest() {
+
+        expect(orderRepository.findById(null)).andThrow(new IllegalArgumentException("Null id not allowed"));
+        replay(orderRepository);
+
+        assertThatThrownBy(() -> orderService.findById(null)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Null id not allowed");
+        verify(orderRepository);
+
+    }
+
+    @Test
     void findOrdersByClientIdTest() {
         Client client = new Client();
         client.setId(1L);
@@ -98,6 +110,18 @@ public class OrderServiceImplEasyMockTest {
     }
 
     @Test
+    void findOrdersByClientIdNullInputTest() {
+        expect(orderRepository.findOrdersByClient_Id(null)).andThrow(new IllegalArgumentException("Null id not allowed"));
+        replay(orderRepository);
+
+        assertThatThrownBy(() -> orderService.findOrdersByClientId(null)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Null id not allowed");
+
+        verify(orderRepository);
+
+    }
+
+    @Test
     void findOrdersByClientEmailTest() {
         Client client = new Client();
         client.setId(1L);
@@ -136,6 +160,28 @@ public class OrderServiceImplEasyMockTest {
         Set<Order> orders = orderService.findOrdersByClientEmail("email@email.pl");
 
         assertThat(orders).isEmpty();
+        verify(orderRepository);
+    }
+
+    @Test
+    void findOrdersByClientEmailNullInputTest() {
+        expect(orderRepository.findOrdersByClient_Email(null)).andThrow(new IllegalArgumentException("Null email is not allowed"));
+        replay(orderRepository);
+
+        assertThatThrownBy(() -> orderService.findOrdersByClientEmail(null)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Null email is not allowed");
+
+        verify(orderRepository);
+    }
+
+    @Test
+    void findOrdersByClientEmailEmptyInputTest() {
+        expect(orderRepository.findOrdersByClient_Email("")).andReturn(new HashSet<>());
+        replay(orderRepository);
+
+        Set<Order> ordersReturned = orderService.findOrdersByClientEmail("");
+
+        assertThat(ordersReturned).isNotNull().isEmpty();
         verify(orderRepository);
     }
 
@@ -182,6 +228,19 @@ public class OrderServiceImplEasyMockTest {
     }
 
     @Test
+    void findOrdersByItemsNullInputTest() {
+        expect(orderRepository.findOrdersByItemsContains(null)).andThrow(new IllegalArgumentException("Null item not allowed"));
+        replay(orderRepository);
+
+        assertThatThrownBy(() -> orderService.findOrderByItem(null)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Null item not allowed");
+
+        verify(orderRepository);
+
+
+    }
+
+    @Test
     void getOrdersTest() {
         Order order = new Order();
         HashSet ordersData = new HashSet<>();
@@ -204,7 +263,18 @@ public class OrderServiceImplEasyMockTest {
         expectLastCall();
         replay(orderRepository);
         orderService.deleteById(2L);
+    }
 
+    @Test
+    void deleteByIdNullInputTest() {
+        Long idToDelete = null;
+
+        orderService.deleteById(idToDelete);
+        expectLastCall().andThrow(new IllegalArgumentException("Null id not allowed"));
+        replay(orderRepository);
+        assertThatThrownBy(() -> orderService.deleteById(idToDelete)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Null id not allowed");
+        verify(orderRepository);
     }
 
     @AfterEach
