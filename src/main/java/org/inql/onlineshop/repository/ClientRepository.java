@@ -10,4 +10,7 @@ public interface ClientRepository extends CrudRepository<Client, Long> {
     Optional<Client> findClientByEmail(String email);
     Set<Client> findClientsByName(String name);
     Set<Client> findClientsBySurname(String surname);
+    Set<Client> findClientsByNameContaining(String keyword);
+    Set<Client> findClientsBySurnameContaining(String keyword);
+    Set<Client> findClientsByEmailContaining(String keyword);
 }
