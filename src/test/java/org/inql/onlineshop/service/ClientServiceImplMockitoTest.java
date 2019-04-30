@@ -153,9 +153,9 @@ public class ClientServiceImplMockitoTest {
 
     @Test
     void findClientsByEmailContainingNullInputTest() {
-        when(clientRepository.findClientsByEmailContaining(null)).thenThrow(new NotFoundException("Null keyword not allowed"));
+        when(clientRepository.findClientsByEmailContaining(null)).thenThrow(new IllegalArgumentException("Null keyword not allowed"));
 
-        assertThatThrownBy(() -> clientService.findByEmailContaining(null)).isInstanceOf(NotFoundException.class).hasMessage("Null keyword not allowed");
+        assertThatThrownBy(() -> clientService.findByEmailContaining(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null keyword not allowed");
         verify(clientRepository,times(1)).findClientsByEmailContaining(null);
         verify(clientRepository, never()).findAll();
         verify(clientRepository, never()).findById(anyLong());
@@ -332,9 +332,9 @@ public class ClientServiceImplMockitoTest {
 
     @Test
     void findClientsByNameContainingNullInputTest() {
-        when(clientRepository.findClientsByNameContaining(null)).thenThrow(new NotFoundException("Null keyword not allowed"));
+        when(clientRepository.findClientsByNameContaining(null)).thenThrow(new IllegalArgumentException("Null keyword not allowed"));
 
-        assertThatThrownBy(() -> clientService.findByNameContaining(null)).isInstanceOf(NotFoundException.class).hasMessage("Null keyword not allowed");
+        assertThatThrownBy(() -> clientService.findByNameContaining(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null keyword not allowed");
         verify(clientRepository,times(1)).findClientsByNameContaining(null);
         verify(clientRepository, never()).findAll();
         verify(clientRepository, never()).findById(anyLong());
@@ -367,7 +367,7 @@ public class ClientServiceImplMockitoTest {
         Set<Client> clientsReturned = clientService.findBySurnameContaining("ba");
 
         assertThat(clientsReturned).isNotNull().isNotEmpty().hasSize(2).isInstanceOf(Set.class).hasOnlyElementsOfType(Client.class).containsExactlyInAnyOrder(secondClient,thirdClient);
-        verify(clientRepository, times(1)).findClientsByNameContaining("ba");
+        verify(clientRepository, times(1)).findClientsBySurnameContaining("ba");
         verify(clientRepository, never()).findAll();
         verify(clientRepository, never()).findById(anyLong());
     }
@@ -387,16 +387,16 @@ public class ClientServiceImplMockitoTest {
         Set<Client> clientsReturned = clientService.findBySurnameContaining("Zu");
 
         assertThat(clientsReturned).isEmpty();
-        verify(clientRepository, times(1)).findClientsByNameContaining("Zu");
+        verify(clientRepository, times(1)).findClientsBySurnameContaining("Zu");
         verify(clientRepository, never()).findAll();
         verify(clientRepository, never()).findById(anyLong());
     }
 
     @Test
     void findClientsBySurnameContainingNullInputTest() {
-        when(clientRepository.findClientsBySurnameContaining(null)).thenThrow(new NotFoundException("Null keyword not allowed"));
+        when(clientRepository.findClientsBySurnameContaining(null)).thenThrow(new IllegalArgumentException("Null keyword not allowed"));
 
-        assertThatThrownBy(() -> clientService.findBySurnameContaining(null)).isInstanceOf(NotFoundException.class).hasMessage("Null keyword not allowed");
+        assertThatThrownBy(() -> clientService.findBySurnameContaining(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null keyword not allowed");
         verify(clientRepository,times(1)).findClientsBySurnameContaining(null);
         verify(clientRepository, never()).findAll();
         verify(clientRepository, never()).findById(anyLong());
@@ -442,9 +442,9 @@ public class ClientServiceImplMockitoTest {
     void deleteByIdNullInputTest() {
         Long idToDelete = null;
 
-        doThrow(new NotFoundException("Null id not allowed")).when(clientRepository).deleteById(null);
+        doThrow(new IllegalArgumentException("Null id not allowed")).when(clientRepository).deleteById(null);
 
-        assertThatThrownBy(() -> clientService.deleteById(idToDelete)).isInstanceOf(NotFoundException.class).hasMessage("Null id not allowed");
+        assertThatThrownBy(() -> clientService.deleteById(idToDelete)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null id not allowed");
         verify(clientRepository, times(1)).deleteById(idToDelete);
     }
 
