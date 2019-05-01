@@ -23,7 +23,7 @@ public class Item {
     @Pattern(regexp = "[A-Z][a-z]+",message = "Invalid name input.")
     private String name;
 
-    @NotNull
+    @NotNull(message = "Value cannot be null.")
     @Positive(message = "Value must be higher than zero.")
     @Digits(integer = 10, fraction = 2, message = "Invalid value input.")
     private Double value;

@@ -187,6 +187,132 @@ public class ItemTest {
 
     }
 
+    @Test
+    void itemInvalidNameInvalidInputTest() {
+        //given
+        String name = "bAnAnA2";
+        Item item = new Item(name, 25.25);
+
+        //when
+        Set<ConstraintViolation<Item>> violations =
+                validator.validate(item);
+
+        //then
+
+        List<String> errorCodes = new ArrayList<>();
+
+        for (ConstraintViolation<Item> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
+                () -> assertThat(violations).hasSize(1),
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder("Invalid name input."));
+
+    }
+
+    @Test
+    void itemInvalidValueNullInputTest() {
+        //given
+        Double value = null;
+        Item item = new Item("Banana", value);
+
+        //when
+        Set<ConstraintViolation<Item>> violations =
+                validator.validate(item);
+
+        //then
+
+        List<String> errorCodes = new ArrayList<>();
+
+        for (ConstraintViolation<Item> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
+                () -> assertThat(violations).hasSize(1),
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder("Value cannot be null."));
+    }
+
+    @Test
+    void itemInvalidValueLowerThanZeroTest() {
+        //given
+        Double value = -2D;
+        Item item = new Item("Banana", value);
+
+        //when
+        Set<ConstraintViolation<Item>> violations =
+                validator.validate(item);
+
+        //then
+
+        List<String> errorCodes = new ArrayList<>();
+
+        for (ConstraintViolation<Item> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
+                () -> assertThat(violations).hasSize(1),
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder("Value must be higher than zero."));
+    }
+
+    @Test
+    void itemInvalidValueInvalidInputTest() {
+        //given
+        Double value = 2.2222222222;
+        Item item = new Item("Banana", value);
+
+        //when
+        Set<ConstraintViolation<Item>> violations =
+                validator.validate(item);
+
+        //then
+
+        List<String> errorCodes = new ArrayList<>();
+
+        for (ConstraintViolation<Item> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
+                () -> assertThat(violations).hasSize(1),
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder("Invalid value input."));
+    }
+
+    @Test
+    void itemInvalidValueInvalidInputSecondAttemptTest() {
+        //given
+        Double value = 2222222222222222222.22;
+        Item item = new Item("Banana", value);
+
+        //when
+        Set<ConstraintViolation<Item>> violations =
+                validator.validate(item);
+
+        //then
+
+        List<String> errorCodes = new ArrayList<>();
+
+        for (ConstraintViolation<Item> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
+                () -> assertThat(violations).hasSize(1),
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder("Invalid value input."));
+    }
+
     @AfterEach
     void tearDown() {
         item = null;
