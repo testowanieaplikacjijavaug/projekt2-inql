@@ -32,7 +32,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Iterable<Order> findAll(Iterable<Long> orders_id) {
-        return null;
+        return orderRepository.findAllById(orders_id);
     }
 
     @Override
