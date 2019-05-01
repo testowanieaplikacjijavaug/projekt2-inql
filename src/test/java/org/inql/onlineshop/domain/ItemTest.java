@@ -7,6 +7,8 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 public class ItemTest {
 
+    //more model tests needs to be implemented!!
+
     Item item;
 
     @BeforeEach

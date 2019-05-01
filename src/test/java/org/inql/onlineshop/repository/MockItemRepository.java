@@ -76,6 +76,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public void deleteById(Long aLong) {
+        if(aLong == null) thrown new IllegalArgumentException("Null id nto allowed");
         Optional<Item> itemToRemove = this.findById(aLong);
         itemToRemove.ifPresent(entity -> {
             if(!database.contains(entity)) throw new IllegalArgumentException("Item does not exist in database");
@@ -85,6 +86,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public void delete(Item item) {
+        if(item == null) throw new IllegalArgumentException("Null item not allowed");
         Optional<Item> itemToRemove = Optional.of(item);
         itemToRemove.ifPresent(entity -> {
             if(!database.contains(entity)) throw new IllegalArgumentException("Item does not exist in database");
@@ -109,6 +111,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Optional<Item> findItemByName(String name) {
+        if(name == null) throw new IllegalArgumentException("Null name not allowed");
         return database
                 .stream()
                 .filter(item -> item.getName().equals(name))
@@ -117,7 +120,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Set<Item> findItemsByNameContaining(String keyword) {
-        if(keyword == null || keyword.isEmpty()) throw new IllegalArgumentException("Null or empty string is not allowed");
+        if(keyword == null) throw new IllegalArgumentException("Null keyword not allowed");
         Set<Item> result = new HashSet<>();
         database
                 .stream()
@@ -128,7 +131,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Set<Item> findItemsByValue(Double value) {
-        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        if(value == null || value<=0D) throw new IllegalArgumentException("Null or lower than zero value is not allowed");
         Set<Item> result = new HashSet<>();
         database
                 .stream()
@@ -139,8 +142,8 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Set<Item> findItemsByValueBetween(Double lower, Double upper) {
-        if(lower == null || lower.isInfinite() || lower.isNaN() || lower<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
-        if(upper == null || upper.isInfinite() || upper.isNaN() || upper<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        if(lower == null || lower<=0D) throw new IllegalArgumentException("Null or lower than zero value is not allowed");
+        if(upper == null || upper<=0D) throw new IllegalArgumentException("Null or lower than zero value is not allowed");
         if(lower >= upper) throw new IllegalArgumentException("Lower value is higher than upper");
         Set<Item> result = new HashSet<>();
         database
@@ -152,7 +155,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Set<Item> findItemsByValueLessThanEqual(Double value) {
-        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        if(value == null || value<=0D) throw new IllegalArgumentException("Null or lower than zero value is not allowed");
         Set<Item> result = new HashSet<>();
         database
                 .stream()
@@ -163,7 +166,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Set<Item> findItemsByValueLessThan(Double value) {
-        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        if(value == null|| value<=0D) throw new IllegalArgumentException("Null or lower than zero value is not allowed");
         Set<Item> result = new HashSet<>();
         database
                 .stream()
@@ -174,7 +177,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Set<Item> findItemsByValueGreaterThanEqual(Double value) {
-        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        if(value == null|| value<=0D) throw new IllegalArgumentException("Null or lower than zero value is not allowed");
         Set<Item> result = new HashSet<>();
         database
                 .stream()
@@ -185,7 +188,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public Set<Item> findItemsByValueGreaterThan(Double value) {
-        if(value == null || value.isInfinite() || value.isNaN() || value<=0D) throw new IllegalArgumentException("Null, infinite, NaN or lower than zero value is not allowed");
+        if(value == null|| value<=0D) throw new IllegalArgumentException("Null or lower than zero value is not allowed");
         Set<Item> result = new HashSet<>();
         database
                 .stream()

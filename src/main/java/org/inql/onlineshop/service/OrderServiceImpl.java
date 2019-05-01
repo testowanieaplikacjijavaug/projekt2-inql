@@ -64,7 +64,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Iterable<Order> saveAll(Iterable<Order> orders) {
-        return null;
+
+        return orderRepository.saveAll(orders);
     }
 
     @Override

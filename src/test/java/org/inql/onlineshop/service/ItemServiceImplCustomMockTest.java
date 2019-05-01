@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -45,6 +46,11 @@ public class ItemServiceImplCustomMockTest {
     }
 
     @Test
+    void findItemByIdNullInputTest(){
+        assertThatThrownBy(() -> itemService.findById(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null id not allowed");
+    }
+
+    @Test
     void findItemByNameTest() throws NotFoundException {
         Item item = new Item();
         item.setName("Banana");
@@ -58,6 +64,11 @@ public class ItemServiceImplCustomMockTest {
     @Test
     void findItemByNameNotFoundTest() {
         assertThatThrownBy(() -> itemService.findByName("Banana")).isInstanceOf(NotFoundException.class).hasMessage("Item not found");
+    }
+
+    @Test
+    void findItemByNameNullInputTest(){
+        assertThatThrownBy(() -> itemService.findByName(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null name not allowed");
     }
 
     @Test
@@ -86,6 +97,11 @@ public class ItemServiceImplCustomMockTest {
         Set<Item> itemsReturned = itemService.findByNameContaining("Z");
 
         assertThat(itemsReturned).isEmpty();
+    }
+
+    @Test
+    void findItemByNameContainingNullInputTest(){
+        assertThatThrownBy(() -> itemService.findByNameContaining(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null keyword not allowed");
     }
 
     @Test
@@ -131,6 +147,11 @@ public class ItemServiceImplCustomMockTest {
     }
 
     @Test
+    void findItemByValueNullInputTest(){
+        assertThatThrownBy(() -> itemService.findByValue(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+    }
+
+    @Test
     void findItemByValueBetweenTest() {
         Item item = new Item();
         Item secondItem = new Item();
@@ -161,6 +182,20 @@ public class ItemServiceImplCustomMockTest {
     }
 
     @Test
+    void findItemByValueBetweenIllegalInputTest(){
+        assertAll("Opis",
+                () -> assertThatThrownBy(() -> itemService.findByValueBetween(-2D,0.5)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed"),
+                () -> assertThatThrownBy(() -> itemService.findByValueBetween(0.5,-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed"),
+                () -> assertThatThrownBy(() -> itemService.findByValueBetween(20.25,0.5)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed")
+                );
+    }
+
+    @Test
+    void findItemByValueBetweenNullInputTest(){
+        assertThatThrownBy(() -> itemService.findByValueBetween(null,null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+    }
+
+    @Test
     void findItemByValueLowerThanEqualTest() {
         Item item = new Item();
         Item secondItem = new Item();
@@ -187,6 +222,15 @@ public class ItemServiceImplCustomMockTest {
         Set<Item> itemsReturned = itemService.findByValueLessThanEqual(0.5);
         assertThat(itemsReturned).isEmpty();
 
+    }
+    @Test
+    void findItemByValueLessThanEqualIllegalInputTest(){
+        assertThatThrownBy(() -> itemService.findByValueLessThanEqual(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+    }
+
+    @Test
+    void findItemByValueLessThanEqualNullInputTest(){
+        assertThatThrownBy(() -> itemService.findByValueLessThanEqual(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
     }
 
     @Test
@@ -218,6 +262,16 @@ public class ItemServiceImplCustomMockTest {
     }
 
     @Test
+    void findItemByValueLessThanIllegalInputTest(){
+        assertThatThrownBy(() -> itemService.findByValueLessThan(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+    }
+
+    @Test
+    void findItemByValueLessThanNullInputTest(){
+        assertThatThrownBy(() -> itemService.findByValueLessThan(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+    }
+
+    @Test
     void findItemsByValueGreaterThanEqualTest() {
         Item item = new Item();
         Item secondItem = new Item();
@@ -243,6 +297,16 @@ public class ItemServiceImplCustomMockTest {
         itemService.saveAll(items);
         Set<Item> itemsReturned = itemService.findByValueGreaterThanEqual(11113.00);
         assertThat(itemsReturned).isEmpty();
+    }
+
+    @Test
+    void findItemByValueGreaterThanEqualIllegalInputTest(){
+        assertThatThrownBy(() -> itemService.findByValueGreaterThanEqual(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+    }
+
+    @Test
+    void findItemByValueGreaterThanEqualNullInputTest(){
+        assertThatThrownBy(() -> itemService.findByValueGreaterThanEqual(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
     }
 
     @Test
@@ -274,6 +338,16 @@ public class ItemServiceImplCustomMockTest {
     }
 
     @Test
+    void findItemByValueGreaterThanIllegalInputTest(){
+        assertThatThrownBy(() -> itemService.findByValueGreaterThan(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+    }
+
+    @Test
+    void findItemByValueGreaterThanNullInputTest(){
+        assertThatThrownBy(() -> itemService.findByValueGreaterThan(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+    }
+
+    @Test
     void getItemsTest() {
         Item item = new Item();
         item.setName("Banana");
@@ -299,6 +373,13 @@ public class ItemServiceImplCustomMockTest {
     }
 
     @Test
+    void saveItemNullInputTest(){
+        Item item = null;
+
+        assertThatThrownBy(() -> itemService.save(item)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null item not allowed");
+    }
+
+    @Test
     void saveAllItemsTest() {
         Item item = new Item();
         Item secondItem = new Item();
@@ -310,6 +391,16 @@ public class ItemServiceImplCustomMockTest {
         itemService.saveAll(items);
         Set<Item> itemsReturned = itemService.getItems();
         assertThat(itemsReturned).isNotNull().isNotEmpty().isInstanceOf(Set.class).hasOnlyElementsOfType(Item.class).hasSize(3).containsExactlyInAnyOrder(item, secondItem,thirdItem);
+    }
+
+    @Test
+    void saveAllItemsNullTest(){
+        Item item = new Item();
+        Item secondItem = new Item();
+        Item thirdItem = null;
+        HashSet items = Sets.newHashSet(item, secondItem, thirdItem);
+        itemService.saveAll(items);
+        assertThatThrownBy(() -> itemService.saveAll(items)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null item not allowed");
     }
 
     @Test
@@ -325,6 +416,11 @@ public class ItemServiceImplCustomMockTest {
         itemService.deleteById(idToDelete);
 
         assertThat(itemService.getItems()).hasSize(currentSize-1);
+    }
+
+    @Test
+    void deleteByIdNullInputTest(){
+        assertThatThrownBy(() -> itemService.deleteById(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null id not allowed");
     }
 
     @AfterEach
