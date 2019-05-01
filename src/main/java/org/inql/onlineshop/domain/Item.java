@@ -19,7 +19,7 @@ public class Item {
     @Column(unique = true)
     @NotNull(message = "Name cannot be null.")
     @NotBlank(message = "Name cannot be blank.")
-    @Size(min = 2, max = 30, message = "Invalid name input.")
+    @Size(min = 2, max = 30)
     @Pattern(regexp = "[A-Z][a-z]+",message = "Invalid name input.")
     private String name;
 
@@ -28,4 +28,11 @@ public class Item {
     @Digits(integer = 10, fraction = 2, message = "Invalid value input.")
     private Double value;
 
+    public Item() {
+    }
+
+    public Item(@NotNull(message = "Name cannot be null.") @NotBlank(message = "Name cannot be blank.") @Size(min = 2, max = 30) @Pattern(regexp = "[A-Z][a-z]+", message = "Invalid name input.") String name, @NotNull @Positive(message = "Value must be higher than zero.") @Digits(integer = 10, fraction = 2, message = "Invalid value input.") Double value) {
+        this.name = name;
+        this.value = value;
+    }
 }

@@ -57,7 +57,7 @@ public class ClientTest {
 
     @Test
     void getEmailTest() {
-        String email = "mike_fox@org.inql.onlineshop.domain.com";
+        String email = "mike_fox@domain.com";
         client.setEmail(email);
 
         assertThat(client.getEmail()).isEqualTo(email);
@@ -87,20 +87,6 @@ public class ClientTest {
     }
 
     @Test
-    void clientInvalidIdTest(){
-        Client client = new Client("Adam","Abacki","adam@abacki.pl");
-        client.setId(null);
-
-        //when
-        Set<ConstraintViolation<Client>> violations =
-                validator.validate(client);
-
-        //then
-
-        assertThat(violations).isEmpty();
-    }
-
-    @Test
     void clientInvalidNameNullInputTest(){
         Client client = new Client(null,"Abacki","adam@abacki.pl");
 
@@ -110,13 +96,19 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("Name cannot be null"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("name"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isNull());
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "Name cannot be null"));
+
     }
 
     @Test
@@ -129,13 +121,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("name"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(""));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "size must be between 4 and 30"));
     }
 
     @Test
@@ -148,13 +145,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("name"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo("Aa"));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "size must be between 4 and 30"));
     }
 
     @Test
@@ -167,13 +169,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("name"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo("Aosooosododsodosodsodosdosodosdosodsodsodosdosdosodaodaosdosaodasodasodasodasodsadasodsadoasodsaodasdosadosadasodoasdoawdwoadowadowaodwaod"));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "size must be between 4 and 30"));
     }
 
     @Test
@@ -186,13 +193,19 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("Invalid name provided"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("name"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo("AnDrZ3J"));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "Invalid name provided"));
+        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
     }
 
     @Test
@@ -206,13 +219,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("Surname cannot be null"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("surname"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(surnameToTest));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "Surname cannot be null"));
     }
 
     @Test
@@ -226,13 +244,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("surname"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(surnameToTest));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "size must be between 4 and 30"));
     }
 
     @Test
@@ -246,13 +269,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("surname"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(surnameToTest));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "size must be between 4 and 30"));
     }
 
     @Test
@@ -266,13 +294,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("surname"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(surnameToTest));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "size must be between 4 and 30"));
     }
 
     @Test
@@ -286,13 +319,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("Invalid surname provided"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("surname"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(surnameToTest));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "Invalid surname provided"));
     }
 
     @Test
@@ -306,13 +344,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("Email cannot be null"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("email"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(email));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "Email cannot be null"));
     }
 
     @Test
@@ -325,19 +368,19 @@ public class ClientTest {
                 validator.validate(client);
 
         //then
-        assertThat(violations).hasSize(2);
 
-        Iterator<ConstraintViolation<Client>> violationIterator = violations.iterator();
-        ConstraintViolation<Client> constraintViolation = violationIterator.next();
-        ConstraintViolation<Client> secondConstraintViolation = violationIterator.next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("email"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(email),
-                () -> assertThat(secondConstraintViolation.getMessage()).isEqualTo("Invalid email provided"),
-                () -> assertThat(secondConstraintViolation.getPropertyPath().toString()).isEqualTo("email"),
-                () -> assertThat(secondConstraintViolation.getInvalidValue()).isEqualTo(email));
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
+                () -> assertThat(violations).hasSize(2),
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "size must be between 4 and 30", "Invalid email provided"));
     }
 
     @Test
@@ -351,22 +394,18 @@ public class ClientTest {
 
         //then
 
-        assertThat(violations).hasSize(2);
+        List<String> errorCodes = new ArrayList<>();
 
-        Iterator<ConstraintViolation<Client>> violationIterator = violations.iterator();
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
 
+        }
 
-        ConstraintViolation<Client> constraintViolation = violationIterator.next();
-        ConstraintViolation<Client> secondConstraintViolation = violationIterator.next();
-
-        assertAll("Violation should match all assertions below",
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("email"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(email),
-                () -> assertThat(secondConstraintViolation.getMessage()).isEqualTo("Invalid email provided"),
-                () -> assertThat(secondConstraintViolation.getPropertyPath().toString()).isEqualTo("email"),
-                () -> assertThat(secondConstraintViolation.getInvalidValue()).isEqualTo(email)
-        );
+        assertAll("Conditions",
+                () -> assertThat(violations).hasSize(2),
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "size must be between 4 and 30", "Invalid email provided"));
     }
 
     @Test
@@ -380,13 +419,18 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("email"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(email));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "size must be between 4 and 30"));
     }
 
     @Test
@@ -400,13 +444,19 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        List<String> errorCodes = new ArrayList<>();
 
-        assertAll("Violation should match all assertions below",
+        for (ConstraintViolation<Client> violation:
+                violations) {
+            errorCodes.add(violation.getMessage());
+
+        }
+
+        assertAll("Conditions",
                 () -> assertThat(violations).hasSize(1),
-                () -> assertThat(constraintViolation.getMessage()).isEqualTo("Invalid email provided"),
-                () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("email"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(email));
+                () -> assertThat(errorCodes).containsExactlyInAnyOrder(
+                        "Invalid email provided"));
+
     }
 
 
