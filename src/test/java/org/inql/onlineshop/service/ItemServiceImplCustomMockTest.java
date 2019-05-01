@@ -148,7 +148,7 @@ public class ItemServiceImplCustomMockTest {
 
     @Test
     void findItemByValueNullInputTest(){
-        assertThatThrownBy(() -> itemService.findByValue(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValue(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
@@ -184,15 +184,15 @@ public class ItemServiceImplCustomMockTest {
     @Test
     void findItemByValueBetweenIllegalInputTest(){
         assertAll("Opis",
-                () -> assertThatThrownBy(() -> itemService.findByValueBetween(-2D,0.5)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed"),
-                () -> assertThatThrownBy(() -> itemService.findByValueBetween(0.5,-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed"),
-                () -> assertThatThrownBy(() -> itemService.findByValueBetween(20.25,0.5)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed")
+                () -> assertThatThrownBy(() -> itemService.findByValueBetween(-2D,0.5)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed"),
+                () -> assertThatThrownBy(() -> itemService.findByValueBetween(0.5,-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed"),
+                () -> assertThatThrownBy(() -> itemService.findByValueBetween(20.25,0.5)).isInstanceOf(IllegalArgumentException.class).hasMessage("Lower value is higher than upper")
                 );
     }
 
     @Test
     void findItemByValueBetweenNullInputTest(){
-        assertThatThrownBy(() -> itemService.findByValueBetween(null,null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValueBetween(null,null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
@@ -225,12 +225,12 @@ public class ItemServiceImplCustomMockTest {
     }
     @Test
     void findItemByValueLessThanEqualIllegalInputTest(){
-        assertThatThrownBy(() -> itemService.findByValueLessThanEqual(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValueLessThanEqual(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
     void findItemByValueLessThanEqualNullInputTest(){
-        assertThatThrownBy(() -> itemService.findByValueLessThanEqual(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValueLessThanEqual(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
@@ -263,12 +263,12 @@ public class ItemServiceImplCustomMockTest {
 
     @Test
     void findItemByValueLessThanIllegalInputTest(){
-        assertThatThrownBy(() -> itemService.findByValueLessThan(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValueLessThan(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
     void findItemByValueLessThanNullInputTest(){
-        assertThatThrownBy(() -> itemService.findByValueLessThan(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValueLessThan(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
@@ -301,12 +301,12 @@ public class ItemServiceImplCustomMockTest {
 
     @Test
     void findItemByValueGreaterThanEqualIllegalInputTest(){
-        assertThatThrownBy(() -> itemService.findByValueGreaterThanEqual(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValueGreaterThanEqual(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
     void findItemByValueGreaterThanEqualNullInputTest(){
-        assertThatThrownBy(() -> itemService.findByValueGreaterThanEqual(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValueGreaterThanEqual(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
@@ -339,12 +339,12 @@ public class ItemServiceImplCustomMockTest {
 
     @Test
     void findItemByValueGreaterThanIllegalInputTest(){
-        assertThatThrownBy(() -> itemService.findByValueGreaterThan(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValueGreaterThan(-2D)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
     void findItemByValueGreaterThanNullInputTest(){
-        assertThatThrownBy(() -> itemService.findByValueGreaterThan(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null value not allowed");
+        assertThatThrownBy(() -> itemService.findByValueGreaterThan(null)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null or lower than zero value is not allowed");
     }
 
     @Test
@@ -399,7 +399,6 @@ public class ItemServiceImplCustomMockTest {
         Item secondItem = new Item();
         Item thirdItem = null;
         HashSet items = Sets.newHashSet(item, secondItem, thirdItem);
-        itemService.saveAll(items);
         assertThatThrownBy(() -> itemService.saveAll(items)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null item not allowed");
     }
 
