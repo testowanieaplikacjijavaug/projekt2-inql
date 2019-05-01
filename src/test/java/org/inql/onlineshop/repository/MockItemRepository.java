@@ -17,6 +17,7 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public <S extends Item> S save(S s) {
+        if(s == null) throw new IllegalArgumentException("Null item not allowed");
         database.add(s);
         return s;
     }
@@ -76,11 +77,11 @@ public class MockItemRepository implements ItemRepository{
 
     @Override
     public void deleteById(Long aLong) {
-        if(aLong == null) thrown new IllegalArgumentException("Null id nto allowed");
+        if(aLong == null) throw new IllegalArgumentException("Null id not allowed");
         Optional<Item> itemToRemove = this.findById(aLong);
         itemToRemove.ifPresent(entity -> {
             if(!database.contains(entity)) throw new IllegalArgumentException("Item does not exist in database");
-            database.remove(database);
+            database.remove(entity);
         });
     }
 
