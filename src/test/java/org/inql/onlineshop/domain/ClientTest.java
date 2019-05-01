@@ -7,6 +7,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -139,7 +140,7 @@ public class ClientTest {
 
     @Test
     void clientInvalidNameTooShortInputTest(){
-        Client client = new Client("A","Abacki","adam@abacki.pl");
+        Client client = new Client("Aa","Abacki","adam@abacki.pl");
 
         //when
         Set<ConstraintViolation<Client>> violations =
@@ -153,7 +154,7 @@ public class ClientTest {
                 () -> assertThat(violations).hasSize(1),
                 () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
                 () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("name"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo("A"));
+                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo("Aa"));
     }
 
     @Test
@@ -324,14 +325,19 @@ public class ClientTest {
                 validator.validate(client);
 
         //then
+        assertThat(violations).hasSize(2);
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        Iterator<ConstraintViolation<Client>> violationIterator = violations.iterator();
+        ConstraintViolation<Client> constraintViolation = violationIterator.next();
+        ConstraintViolation<Client> secondConstraintViolation = violationIterator.next();
 
         assertAll("Violation should match all assertions below",
-                () -> assertThat(violations).hasSize(1),
                 () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
                 () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("email"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(email));
+                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(email),
+                () -> assertThat(secondConstraintViolation.getMessage()).isEqualTo("Invalid email provided"),
+                () -> assertThat(secondConstraintViolation.getPropertyPath().toString()).isEqualTo("email"),
+                () -> assertThat(secondConstraintViolation.getInvalidValue()).isEqualTo(email));
     }
 
     @Test
@@ -345,13 +351,22 @@ public class ClientTest {
 
         //then
 
-        ConstraintViolation<Client> constraintViolation = violations.iterator().next();
+        assertThat(violations).hasSize(2);
+
+        Iterator<ConstraintViolation<Client>> violationIterator = violations.iterator();
+
+
+        ConstraintViolation<Client> constraintViolation = violationIterator.next();
+        ConstraintViolation<Client> secondConstraintViolation = violationIterator.next();
 
         assertAll("Violation should match all assertions below",
-                () -> assertThat(violations).hasSize(1),
                 () -> assertThat(constraintViolation.getMessage()).isEqualTo("size must be between 4 and 30"),
                 () -> assertThat(constraintViolation.getPropertyPath().toString()).isEqualTo("email"),
-                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(email));
+                () -> assertThat(constraintViolation.getInvalidValue()).isEqualTo(email),
+                () -> assertThat(secondConstraintViolation.getMessage()).isEqualTo("Invalid email provided"),
+                () -> assertThat(secondConstraintViolation.getPropertyPath().toString()).isEqualTo("email"),
+                () -> assertThat(secondConstraintViolation.getInvalidValue()).isEqualTo(email)
+        );
     }
 
     @Test

@@ -47,7 +47,7 @@ public class Client {
     @Column(unique = true)
     @NotNull(message = "Email cannot be null")
     @Size(min = 4, max =30)
-    @Pattern(regexp = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]$",message = "Invalid email provided")
+    @Pattern(regexp = "^\\w+@[a-zA-Z_]+?\\.[a-zA-Z]+$",message = "Invalid email provided")
     private String email;
 
     @OneToMany(mappedBy = "client")
