@@ -10,9 +10,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.easymock.EasyMock.*;
@@ -65,6 +63,59 @@ public class OrderServiceImplEasyMockTest {
                 .hasMessage("Null id not allowed");
         verify(orderRepository);
 
+    }
+
+    @Test
+    void findAllTest() {
+        Order order = new Order();
+        order.setId(1L);
+        Order secondOrder = new Order();
+        secondOrder.setId(2L);
+
+        HashSet<Order> ordersData = new HashSet<>(Arrays.asList(order,secondOrder));
+
+        List<Long> idsToFind = Arrays.asList(1L,2L);
+
+        expect(orderRepository.findAllById(idsToFind)).andReturn(ordersData);
+        replay(orderRepository);
+
+        Iterable<Order> ordersReturned = orderService.findAll(idsToFind);
+
+        assertThat(ordersReturned).isNotNull().isNotEmpty().hasOnlyElementsOfType(Order.class).hasSize(2).containsExactlyInAnyOrder(order,secondOrder);
+        verify(orderRepository);
+
+    }
+
+    @Test
+    void findAllPartResultTest() {
+        Order order = new Order();
+        order.setId(1L);
+        Order secondOrder = new Order();
+        secondOrder.setId(2L);
+
+        HashSet<Order> ordersData = new HashSet<>(Arrays.asList(order,secondOrder));
+
+        List<Long> idsToFind = Arrays.asList(1L);
+
+        expect(orderRepository.findAllById(idsToFind)).andReturn(new HashSet<>(Collections.singletonList(order)));
+        replay(orderRepository);
+
+        Iterable<Order> ordersReturned = orderService.findAll(idsToFind);
+
+        assertThat(ordersReturned).isNotNull().isNotEmpty().hasOnlyElementsOfType(Order.class).hasSize(1).containsExactlyInAnyOrder(order);
+        verify(orderRepository);
+    }
+
+    @Test
+    void findAllNullInputTest() {
+        List<Long> idsToFind = Arrays.asList(1L,null);
+
+        expect(orderRepository.findAllById(idsToFind)).andThrow(new IllegalArgumentException("Null id not allowed"));
+        replay(orderRepository);
+
+        assertThatThrownBy(() -> orderService.findAll(idsToFind))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("Null id not allowed");
     }
 
     @Test
@@ -253,6 +304,63 @@ public class OrderServiceImplEasyMockTest {
 
         assertThat(orders).isNotNull().hasSize(1).containsOnly(order).isInstanceOf(Set.class);
         verify(orderRepository);
+    }
+
+    @Test
+    void saveOrderTest() {
+        Order order = new Order();
+        order.setId(1L);
+
+        expect(orderRepository.save(order)).andReturn(order);
+        replay(orderRepository);
+
+        Order savedOrder = orderService.save(order);
+
+        assertThat(savedOrder).isNotNull().isInstanceOf(Order.class).isEqualTo(order);
+        verify(orderRepository);
+    }
+
+    @Test
+    void saveOrderNullTest() {
+        Order order = null;
+
+        expect(orderRepository.save(order)).andThrow(new IllegalArgumentException("Null order not allowed"));
+        replay(orderRepository);
+
+        assertThatThrownBy(() -> orderService.save(order)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null order not allowed");
+    }
+
+    @Test
+    void saveAllTest() {
+        Order order = new Order();
+        order.setId(1L);
+        Order secondOrder = new Order();
+        secondOrder.setId(2L);
+
+        HashSet<Order> ordersData = new HashSet<>(Arrays.asList(order,secondOrder));
+
+        expect(orderRepository.saveAll(ordersData)).andReturn(new HashSet<>(Arrays.asList(order,secondOrder)));
+        replay(orderRepository);
+
+        Iterable<Order> ordersSaved = orderService.saveAll(ordersData);
+
+        assertThat(ordersSaved).isNotNull().containsExactlyInAnyOrder(order,secondOrder);
+        verify(orderRepository);
+    }
+
+    @Test
+    void saveAllWithNullEntityTest() {
+        Order order = new Order();
+        order.setId(1L);
+        Order secondOrder = null;
+        HashSet<Order> ordersData = new HashSet<>(Arrays.asList(order,secondOrder));
+
+        expect(orderRepository.saveAll(ordersData)).andThrow(new IllegalArgumentException("One of orders is null"));
+        replay(orderRepository);
+
+        assertThatThrownBy(() -> orderService.saveAll(ordersData)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("One of orders is null");
+
     }
 
     @Test
