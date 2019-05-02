@@ -399,7 +399,7 @@ public class ItemServiceImplCustomMockTest {
         Item secondItem = new Item();
         Item thirdItem = null;
         HashSet items = Sets.newHashSet(item, secondItem, thirdItem);
-        assertThatThrownBy(() -> itemService.saveAll(items)).isInstanceOf(IllegalArgumentException.class).hasMessage("Null item not allowed");
+        assertThatThrownBy(() -> itemService.saveAll(items)).isInstanceOf(IllegalArgumentException.class);
     }
 
     @Test
