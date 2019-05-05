@@ -1,6 +1,7 @@
 package org.inql.onlineshop.service;
 
 import javassist.NotFoundException;
+import org.assertj.core.data.Offset;
 import org.easymock.TestSubject;
 import org.inql.onlineshop.domain.Client;
 import org.inql.onlineshop.domain.Item;
@@ -14,6 +15,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.easymock.EasyMock.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class OrderServiceImplEasyMockTest {
 
@@ -360,6 +362,109 @@ public class OrderServiceImplEasyMockTest {
 
         assertThatThrownBy(() -> orderService.saveAll(ordersData)).isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("One of orders is null");
+
+    }
+
+    @Test
+    void addItemToOrderTest() throws NotFoundException {
+        Order order = new Order();
+        order.setId(1L);
+
+        Item item = new Item();
+        item.setId(1L);
+
+        expect(orderRepository.save(order)).andReturn(order);
+        expect(orderRepository.findById(1L)).andReturn(Optional.of(order));
+        replay(orderRepository);
+
+        boolean result = orderService.addItemToOrder(item,order);
+        Order returnedOrder = orderService.findById(1L);
+
+        assertAll("Checking properties of returned values",
+                () -> assertThat(result).isTrue(),
+                () -> assertThat(returnedOrder).isInstanceOf(Order.class).isNotNull()
+        .isEqualTo(order),
+                () -> assertThat(returnedOrder.getItems().get(0)).isInstanceOf(Item.class)
+        .isNotNull().isEqualTo(item));
+
+        verify(orderRepository);
+    }
+
+    @Test
+    void addItemToOrderNullItemTest() {
+        Order order = new Order();
+        order.setId(1L);
+
+        Item item = null;
+
+        boolean result = orderService.addItemToOrder(item,order);
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void addItemToOrderNullOrderTest() {
+        Order order = null;
+        Item item = new Item();
+        item.setId(1L);
+
+        boolean result = orderService.addItemToOrder(item,order);
+
+        assertThat(result).isFalse();
+    }
+
+    @Test
+    void getOrderTotalValueTest() throws NotFoundException {
+        Order order = new Order();
+        order.setId(1L);
+        Item item = new Item("Banana",25D);
+        Item secondItem = new Item("Ball",1.11D);
+
+        Order orderWithItemsAdded = new Order();
+        orderWithItemsAdded.getItems().add(item);
+        orderWithItemsAdded.getItems().add(secondItem);
+
+        expect(orderRepository.findById(1L)).andReturn(Optional.of(orderWithItemsAdded));
+        replay(orderRepository);
+
+        orderService.addItemToOrder(item,order);
+        orderService.addItemToOrder(secondItem,order);
+
+        Order returnedOrder = orderService.findById(1L);
+        double result = orderService.getOrderTotalValue(returnedOrder);
+
+        assertAll("Checking properties of returned values",
+                () -> assertThat(result).isInstanceOf(Double.class).isEqualTo(26.11D, Offset.offset(0D)),
+                () -> assertThat(returnedOrder).isInstanceOf(Order.class).isEqualTo(orderWithItemsAdded).isNotNull());
+
+        verify(orderRepository);
+    }
+
+    @Test
+    void getOrderTotalValueNoItemsTest() throws NotFoundException {
+        Order order = new Order();
+        order.setId(1L);
+
+        expect(orderRepository.findById(1L)).andReturn(Optional.of(order));
+        replay(orderRepository);
+
+        Order returnedOrder = orderService.findById(1L);
+        double result = orderService.getOrderTotalValue(returnedOrder);
+
+        assertAll("Checking properties of returned values",
+                () -> assertThat(result).isInstanceOf(Double.class).isEqualTo(0D, Offset.offset(0D)),
+                () -> assertThat(returnedOrder).isInstanceOf(Order.class).isEqualTo(order).isNotNull());
+
+        verify(orderRepository);
+    }
+
+    @Test
+    void getOrderTotalValueNullInputTest() {
+        Order order = null;
+
+        double result = orderService.getOrderTotalValue(order);
+
+        assertThat(result).isEqualTo(0D,Offset.offset(0D));
 
     }
 
