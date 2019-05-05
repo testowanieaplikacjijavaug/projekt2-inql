@@ -8,14 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class OrderTest {
 
-    Order order;
+    private Order order;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         order = new Order();
     }
 
@@ -44,7 +43,7 @@ public class OrderTest {
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         order = null;
     }
 }

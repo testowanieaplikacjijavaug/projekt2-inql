@@ -8,7 +8,6 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -18,15 +17,16 @@ public class ItemTest {
 
     private static ValidatorFactory validatorFactory;
     private static Validator validator;
+    private Item item;
+
 
     @BeforeAll
-    static void createValidator(){
+    public static void createValidator(){
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
 
 
-    Item item;
 
     @BeforeEach
     void setUp() {
@@ -319,5 +319,5 @@ public class ItemTest {
     }
 
     @AfterAll
-    static void close() { validatorFactory.close();}
+    public static void close() { validatorFactory.close();}
 }

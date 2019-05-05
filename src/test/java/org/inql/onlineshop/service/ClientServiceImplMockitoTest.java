@@ -17,13 +17,13 @@ import static org.mockito.Mockito.*;
 
 public class ClientServiceImplMockitoTest {
 
-    ClientService clientService;
+    private ClientService clientService;
 
     @Mock
-    ClientRepository clientRepository;
+    private ClientRepository clientRepository;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
 
         clientService = new ClientServiceImpl(clientRepository);
@@ -561,7 +561,7 @@ public class ClientServiceImplMockitoTest {
     }
 
     @AfterEach
-    void tearDown() {
+    public void tearDown() {
         clientService = null;
         clientRepository = null;
     }

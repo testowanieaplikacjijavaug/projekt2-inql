@@ -1,15 +1,13 @@
 package org.inql.onlineshop.repository;
 
-import javassist.NotFoundException;
 import org.inql.onlineshop.domain.Item;
-import org.springframework.util.Assert;
 
 import java.util.*;
 import java.util.stream.StreamSupport;
 
 public class MockItemRepository implements ItemRepository{
 
-    Set<Item> database;
+    private Set<Item> database;
 
     public MockItemRepository() {
         this.database = new HashSet<>();

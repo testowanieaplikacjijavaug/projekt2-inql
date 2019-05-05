@@ -16,16 +16,6 @@ import java.util.List;
 @Table(name = "db_client")
 public class Client {
 
-    public Client() {
-    }
-
-    public Client(@NotNull @Size(min = 2, max = 30) String name, @NotNull @Size(min = 2, max = 30) String surname, @NotNull @Size(min = 2, max = 30) String email) {
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.orders = new ArrayList<>();
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -52,4 +42,16 @@ public class Client {
 
     @OneToMany(mappedBy = "client")
     private List<Order> orders;
+
+    public Client() {
+    }
+
+    public Client(@NotNull @Size(min = 2, max = 30) String name, @NotNull @Size(min = 2, max = 30) String surname, @NotNull @Size(min = 2, max = 30) String email) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.orders = new ArrayList<>();
+    }
+
+
 }

@@ -7,7 +7,6 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -21,7 +20,7 @@ public class ClientTest {
     Client client;
 
     @BeforeAll
-    static void createValidator(){
+    public static void createValidator(){
         validatorFactory = Validation.buildDefaultValidatorFactory();
         validator = validatorFactory.getValidator();
     }
