@@ -6,6 +6,7 @@ import org.inql.onlineshop.domain.Order;
 import org.inql.onlineshop.repository.OrderRepository;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -71,5 +72,28 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteById(Long idToDelete) {
         orderRepository.deleteById(idToDelete);
+    }
+
+    @Override
+    public boolean addItemToOrder(Item item, Order order) {
+        if(item == null || order == null){
+            return false;
+        }
+        order.getItems().add(item);
+        orderRepository.save(order);
+        return true;
+    }
+
+    @Override
+    public double getOrderTotalValue(Order order) {
+        double result = 0D;
+        if (order != null){
+            for (Item item :
+                    order.getItems()) {
+                result+=item.getValue();
+            }
+        }
+
+        return result;
     }
 }
